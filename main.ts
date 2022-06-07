@@ -5,11 +5,11 @@ function readTime () {
 }
 function makeReading () {
     basic.pause(1000)
-    // Scaled for ADC = 1023 at 3.3V on P0 and external resistors 18k to Vbat and 33k to Gnd
-    Vbat = pins.analogReadPin(AnalogPin.P0) * (3.3 / 662)
+    // Scaled for ADC = 1023 at 3.3V on P0 and external resistors 10k to Vbat and 20k to Gnd
+    Vbat = pins.analogReadPin(AnalogPin.P0) * (4.95 / 1023)
     // Round to 1 decimal place
-    Vbat = Math.round(Vbat * 10)
-    Vbat = Vbat / 10
+    Vbat = Math.round(Vbat * 100)
+    Vbat = Vbat / 100
 }
 // Test block
 input.onButtonPressed(Button.A, function () {
