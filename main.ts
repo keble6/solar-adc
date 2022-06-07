@@ -110,7 +110,7 @@ let time = ""
 let date = ""
 let count = 0
 let dateTimeReadings: string[] = []
-let batteryReadings: number[] = []
+let batteryReadings: string[] = []
 let oneMinute = 60000
 batteryReadings = []
 dateTimeReadings = []
@@ -127,7 +127,7 @@ loops.everyInterval(oneMinute, function () {
         readTime()
         dateTimeReadings.push(dateTime)
         makeReading()
-        batteryReadings.push(Vbat)
+        batteryReadings.push(convertToText(Vbat))
         count += 1
     }
     basic.showLeds(`
