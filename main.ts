@@ -5,11 +5,17 @@ function readTime () {
 }
 function makeReading () {
     basic.pause(1000)
-    // Scaled for ADC = 1023 at 3.3V on P0 and external resistors 10k to Vbat and 20k to Gnd
-    Vbat = pins.analogReadPin(AnalogPin.P0) * (4.95 / 1023)
+    // Scaled for ADC = 1023 at 3.3V on P0 and external resistors 270k to Vin and 330k to Gnd
+    Vin0 = pins.analogReadPin(AnalogPin.P0) * (6 / 1023)
     // Round to 1 decimal place
-    Vbat = Math.round(Vbat * 100)
-    Vbat = Vbat / 100
+    Vin0 = Math.round(Vin0 * 100)
+    Vin0 = Vin0 / 100
+    Vin1 = pins.analogReadPin(AnalogPin.P1) * (6 / 1023)
+    Vin1 = Math.round(Vin1 * 100)
+    Vin1 = Vin1 / 100
+    Vin2 = pins.analogReadPin(AnalogPin.P2) * (6 / 1023)
+    Vin2 = Math.round(Vin2 * 100)
+    Vin2 = Vin2 / 100
 }
 // Test block
 input.onButtonPressed(Button.A, function () {
@@ -83,10 +89,11 @@ radio.onReceivedString(function (receivedString) {
         }
     }
 })
-// Instant PTH
+// Show all 3 input voltages
 input.onButtonPressed(Button.B, function () {
     makeReading()
-    basic.showString("" + (Vbat))
+    Vin = "" + Vin0 + "," + Vin1 + "," + Vin2
+    basic.showString(Vin)
 })
 serial.onDataReceived(serial.delimiters(Delimiters.CarriageReturn), function () {
     stringIn = serial.readUntil(serial.delimiters(Delimiters.CarriageReturn))
@@ -99,12 +106,15 @@ serial.onDataReceived(serial.delimiters(Delimiters.CarriageReturn), function () 
     }
 })
 let command = ""
+let Vin = ""
 let minute = ""
 let hour = ""
 let year = ""
 let month = ""
 let stringIn = ""
-let Vbat = 0
+let Vin2 = 0
+let Vin1 = 0
+let Vin0 = 0
 let dateTime = ""
 let time = ""
 let date = ""
@@ -127,7 +137,7 @@ loops.everyInterval(oneMinute, function () {
         readTime()
         dateTimeReadings.push(dateTime)
         makeReading()
-        batteryReadings.push(convertToText(Vbat))
+        batteryReadings.push("" + Vin0 + "," + Vin1 + "," + Vin2)
         count += 1
     }
     basic.showLeds(`
