@@ -146,7 +146,7 @@ let dateTimeReadings: string[] = []
 let Vreadings: string[] = []
 let sampleSize = 0
 // Set the number of readings to get the average
-sampleSize = 2
+sampleSize = 10
 // Sampling time interval
 let oneMinute = 60000
 // This is the stored array of ADC voltage readings
@@ -160,15 +160,12 @@ radio.setTransmitPower(7)
 loops.everyInterval(oneMinute, function () {
     // Take readings once per hour
     if (DS3231.minute() == 0) {
-        let Vin2 = 0
-        let Vin1 = 0
-        let Vin0 = 0
         // Debug - make a reading
         serial.writeLine("Making a reading")
         readTime()
         dateTimeReadings.push(dateTime)
         makeReading()
-        Vreadings.push("" + Vin0 + "," + Vin1 + "," + Vin2)
+        Vreadings.push(Vreading)
         count += 1
     }
     basic.showLeds(`
